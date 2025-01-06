@@ -3,32 +3,32 @@
 int main() {
     int bsize[10], psize[10], bno, pno, allocation[10], fragment[10], i, j;
 
-    // Initialize allocation array
+    // Initialize allocation array (-1 means no process allocated)
     for (i = 0; i < 10; i++) {
-        allocation[i] = -1; // -1 means no process allocated to this block
+        allocation[i] = -1;
     }
 
-    // Input number of blocks and their sizes
-    printf("Enter number of blocks: ");
+    // Input block sizes
+    printf("Enter the number of blocks: ");
     scanf("%d", &bno);
-    printf("Enter size of each block: ");
+    printf("Enter the size of each block: ");
     for (i = 0; i < bno; i++) {
         scanf("%d", &bsize[i]);
     }
 
-    // Input number of processes and their sizes
-    printf("Enter number of processes: ");
+    // Input process sizes
+    printf("Enter the number of processes: ");
     scanf("%d", &pno);
-    printf("Enter size of each process: ");
+    printf("Enter the size of each process: ");
     for (i = 0; i < pno; i++) {
         scanf("%d", &psize[i]);
     }
 
-    // Best Fit Allocation Algorithm
-    for (i = 0; i < pno; i++) {
+    // Best-fit allocation
+    for (i = 0; i < pno; i++) { // For each process
         int bestIndex = -1; // No suitable block yet
-        for (j = 0; j < bno; j++) {
-            if (bsize[j] >= psize[i]) { // Block can fit the process
+        for (j = 0; j < bno; j++) { // Check each block
+            if (bsize[j] >= psize[i]) { // If block can fit the process
                 if (bestIndex == -1 || bsize[j] < bsize[bestIndex]) {
                     bestIndex = j; // Update the best fit block index
                 }
@@ -36,21 +36,20 @@ int main() {
         }
 
         if (bestIndex != -1) { // Allocate the process
-            allocation[bestIndex] = i; // Assign process to block
-            fragment[bestIndex] = bsize[bestIndex] - psize[i]; // Calculate fragment
-            bsize[bestIndex] = 0; // Mark block as used
+            allocation[i] = bestIndex; // Assign block to process
+            bsize[bestIndex] -= psize[i]; // Reduce block size
         }
     }
 
     // Display allocation results
-    printf("\nBlock no.\tSize\t\tProcess no.\t\tProcess size\t\tFragment");
-    for (i = 0; i < bno; i++) {
-        printf("\n%d\t\t%d\t\t", i + 1, bsize[i] + (allocation[i] != -1 ? psize[allocation[i]] : 0));
+    printf("\nProcess\t\tSize\t\tBlock\n");
+    for (i = 0; i < pno; i++) {
         if (allocation[i] != -1) {
-            printf("%d\t\t\t%d\t\t\t%d", allocation[i] + 1, psize[allocation[i]], fragment[i]);
+            printf("P%d\t\t%d\t\tB%d\n", i + 1, psize[i], allocation[i] + 1);
         } else {
-            printf("Not Allocated\t\t-\t\t\t-");
+            printf("P%d\t\t%d\t\tNot Allocated\n", i + 1, psize[i]);
         }
     }
+
     return 0;
 }
