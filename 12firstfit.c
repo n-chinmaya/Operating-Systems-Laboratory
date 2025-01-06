@@ -11,7 +11,7 @@ int main() {
     // Input block sizes
     printf("Enter the number of blocks: ");
     scanf("%d", &bno);
-    printf("Enter the size of each block:\n");
+    printf("Enter the size of each block: ");
     for (i = 0; i < bno; i++) {
         scanf("%d", &bsize[i]);
     }
@@ -19,7 +19,7 @@ int main() {
     // Input process sizes
     printf("Enter the number of processes: ");
     scanf("%d", &pno);
-    printf("Enter the size of each process:\n");
+    printf("Enter the size of each process: ");
     for (i = 0; i < pno; i++) {
         scanf("%d", &psize[i]);
     }
